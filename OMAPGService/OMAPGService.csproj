@@ -8,15 +8,16 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\" />
-    <Folder Include="Models\" />
     <Folder Include="Controllers\" />
     <Folder Include="Migrations\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.0" PrivateAssets="All" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.0.0" />
+    <PackageReference Include="morelinq" Version="2.8.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,4 +26,13 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20171002030809_createMySql.Designer.cs" />
+    <Compile Remove="Migrations\20171002030809_createMySql.cs" />
+    <Compile Remove="Migrations\20171017015348_addServiceData.Designer.cs" />
+    <Compile Remove="Migrations\20171017015348_addServiceData.cs" />
+    <Compile Remove="Migrations\OMAPGContextModelSnapshot.cs" />
+  </ItemGroup>
+  <Import Project="..\..\OMAPGMap\OMAPGMap\OMAPGMap.projitems" Label="Shared" Condition="Exists('..\..\OMAPGMap\OMAPGMap\OMAPGMap.projitems')" />
+  <Import Project="..\OMAPGServiceData\OMAPGServiceData.projitems" Label="Shared" Condition="Exists('..\OMAPGServiceData\OMAPGServiceData.projitems')" />
 </Project>

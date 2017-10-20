@@ -3,6 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OMAPGService", "OMAPGService\OMAPGService.csproj", "{267BDC37-071D-49DF-9FB3-F379390D2948}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OMAPGMonitor", "OMAPGMonitor\OMAPGMonitor.csproj", "{F3CCD284-BA69-4641-8574-1E961E4C0DB2}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "OMAPGMap", "..\OMAPGMap\OMAPGMap\OMAPGMap.shproj", "{EE90E2C5-70C5-4F9F-8A19-34F78F59A77A}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "OMAPGServiceData", "OMAPGServiceData\OMAPGServiceData.shproj", "{30C330AC-7312-4479-A194-4B38D7671CF9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,5 +19,9 @@ Global
 		{267BDC37-071D-49DF-9FB3-F379390D2948}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{267BDC37-071D-49DF-9FB3-F379390D2948}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{267BDC37-071D-49DF-9FB3-F379390D2948}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3CCD284-BA69-4641-8574-1E961E4C0DB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3CCD284-BA69-4641-8574-1E961E4C0DB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3CCD284-BA69-4641-8574-1E961E4C0DB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3CCD284-BA69-4641-8574-1E961E4C0DB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

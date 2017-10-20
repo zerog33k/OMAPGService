@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using OMAPGService.Models;
+using OMAPGServiceData.Models;
 
 namespace OMAPGService.Controllers
 {
@@ -45,10 +45,18 @@ namespace OMAPGService.Controllers
 				return BadRequest();
 			}
 
-            _context.Devices.Add(value);
-			_context.SaveChanges();
+            if(_context.Devices.Where(d => d.DeviceId == value.DeviceId).Any())
+            {
+                var dev = _context.Devices.Where(d => d.DeviceId == value.DeviceId).First();
+                return CreatedAtRoute("GetDevice", new { id = dev.Id }, dev);
+            } else
+            {
+                _context.Devices.Add(value);
+                _context.SaveChanges();
 
-            return CreatedAtRoute("GetDevice", new { id = value.Id }, value);
+                return CreatedAtRoute("GetDevice", new { id = value.Id }, value);
+            }
+
         }
 
         // DELETE api/values/5

@@ -7,10 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using OMAPGService.Models;
+using OMAPGServiceData.Models;
 
 namespace OMAPGService
 {
@@ -26,8 +23,8 @@ namespace OMAPGService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectString = Configuration.GetConnectionString("DataAccessMySqlProvider");
-            services.AddDbContext<OMAPGContext>(opt => opt.UseMySql(connectString, b => b.MigrationsAssembly("OMAPGMapServiceProject")));
+            var connectString = Configuration.GetConnectionString("DataAccessPostgresqlProvider");
+            services.AddDbContext<OMAPGContext>(opt => opt.UseNpgsql(connectString, b => b.MigrationsAssembly("OMAPGMapServiceProject")));
             services.AddMvc();
         }
 

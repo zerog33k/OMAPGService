@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="morelinq" Version="2.8.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.0.0" />
+  </ItemGroup>
+  <Import Project="..\OMAPGServiceData\OMAPGServiceData.projitems" Label="Shared" Condition="Exists('..\OMAPGServiceData\OMAPGServiceData.projitems')" />
+  <Import Project="..\..\OMAPGMap\OMAPGMap\OMAPGMap.projitems" Label="Shared" Condition="Exists('..\..\OMAPGMap\OMAPGMap\OMAPGMap.projitems')" />
+</Project>

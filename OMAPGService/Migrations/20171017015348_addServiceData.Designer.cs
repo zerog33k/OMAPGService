@@ -11,13 +11,14 @@ using System;
 namespace OMAPGService.Migrations
 {
     [DbContext(typeof(OMAPGContext))]
-    partial class OMAPGContextModelSnapshot : ModelSnapshot
+    [Migration("20171017015348_addServiceData")]
+    partial class addServiceData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
+                .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
                 .HasAnnotation("ProductVersion", "2.0.0-rtm-26452");
 
             modelBuilder.Entity("OMAPGServiceData.Models.Device", b =>
@@ -25,26 +26,11 @@ namespace OMAPGService.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAddOrUpdate();
-
                     b.Property<string>("DeviceId");
-
-                    b.Property<int>("DistanceAlert");
-
-                    b.Property<double>("LocationLat");
-
-                    b.Property<double>("LocationLon");
-
-                    b.Property<bool>("NotifyEnabled");
-
-                    b.Property<string>("NotifyPokemonStr");
 
                     b.Property<int>("OSType");
 
-                    b.Property<DateTime>("UpdatedTimestamp")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(null);
+                    b.Property<DateTime>("UpdatedTimestamp");
 
                     b.HasKey("Id");
 
@@ -87,38 +73,10 @@ namespace OMAPGService.Migrations
                     b.ToTable("Gyms");
                 });
 
-            modelBuilder.Entity("OMAPGServiceData.Models.Notification", b =>
-                {
-                    b.Property<long>("NotifyId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAddOrUpdate();
-
-                    b.Property<long?>("DeviceId");
-
-                    b.Property<double>("Distance");
-
-                    b.Property<string>("Message");
-
-                    b.Property<int>("PokemonId");
-
-                    b.Property<bool>("seen");
-
-                    b.HasKey("NotifyId");
-
-                    b.HasIndex("DeviceId");
-
-                    b.ToTable("Notifications");
-                });
-
             modelBuilder.Entity("OMAPGServiceData.Models.Pokemon", b =>
                 {
-                    b.Property<int>("idValue")
+                    b.Property<string>("id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<DateTime>("UpdatedTimestamp");
 
@@ -132,11 +90,7 @@ namespace OMAPGService.Migrations
 
                     b.Property<int>("def");
 
-                    b.Property<long>("expires_at");
-
                     b.Property<int>("gender");
-
-                    b.Property<string>("id");
 
                     b.Property<double>("lat");
 
@@ -156,7 +110,7 @@ namespace OMAPGService.Migrations
 
                     b.Property<bool>("trash");
 
-                    b.HasKey("idValue");
+                    b.HasKey("id");
 
                     b.ToTable("Pokemon");
                 });
@@ -191,13 +145,6 @@ namespace OMAPGService.Migrations
                     b.HasKey("id");
 
                     b.ToTable("Raids");
-                });
-
-            modelBuilder.Entity("OMAPGServiceData.Models.Notification", b =>
-                {
-                    b.HasOne("OMAPGServiceData.Models.Device", "Device")
-                        .WithMany()
-                        .HasForeignKey("DeviceId");
                 });
 #pragma warning restore 612, 618
         }
