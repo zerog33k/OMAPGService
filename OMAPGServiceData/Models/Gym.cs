@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using OMAPGMap;
 
 namespace OMAPGServiceData.Models
@@ -28,6 +30,9 @@ namespace OMAPGServiceData.Models
             }
             get => _modified;
         }
+
+        [Required, DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime CreatedAt { get; set; }
 
         public DateTime LastModifedDate { get => _last_modifed; }
 

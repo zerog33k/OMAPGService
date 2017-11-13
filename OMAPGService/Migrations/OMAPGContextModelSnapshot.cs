@@ -26,7 +26,8 @@ namespace OMAPGService.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAddOrUpdate();
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<string>("DeviceId");
 
@@ -42,10 +43,6 @@ namespace OMAPGService.Migrations
 
                     b.Property<int>("OSType");
 
-                    b.Property<DateTime>("UpdatedTimestamp")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(null);
-
                     b.HasKey("Id");
 
                     b.ToTable("Devices");
@@ -56,7 +53,9 @@ namespace OMAPGService.Migrations
                     b.Property<string>("id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("UpdatedTimestamp");
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<string>("description");
 
@@ -118,9 +117,8 @@ namespace OMAPGService.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAddOrUpdate();
-
-                    b.Property<DateTime>("UpdatedTimestamp");
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<int>("atk");
 
@@ -166,7 +164,9 @@ namespace OMAPGService.Migrations
                     b.Property<string>("id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("UpdatedTimestamp");
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<int>("cp");
 

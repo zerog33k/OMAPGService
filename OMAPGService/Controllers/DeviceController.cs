@@ -51,6 +51,7 @@ namespace OMAPGService.Controllers
                 return CreatedAtRoute("GetDevice", new { id = dev.Id }, dev);
             } else
             {
+                value.CreatedAt = DateTime.UtcNow;
                 _context.Devices.Add(value);
                 _context.SaveChanges();
 

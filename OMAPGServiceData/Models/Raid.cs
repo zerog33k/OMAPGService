@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using OMAPGMap;
 
 namespace OMAPGServiceData.Models
@@ -25,6 +27,9 @@ namespace OMAPGServiceData.Models
         private DateTime _time_end;
         public long time_end { set => _time_end = Utility.FromUnixTime(value); }
         public DateTime TimeEnd { get => _time_end; }
+
+        [Required, DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime CreatedAt { get; set; }
 
         public void Update(Raid raid)
         {

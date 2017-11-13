@@ -16,8 +16,15 @@ namespace OMAPGServiceData.Models
         {
             get 
             {
-                var rval = NotifyPokemonStr.Split(":").Select(p => int.Parse(p));
-                return rval;
+                if (NotifyPokemonStr == null || NotifyPokemonStr.Equals(""))
+                {
+                        return new int[] { };
+                }
+                else
+                {
+                    var rval = NotifyPokemonStr.Split(":").Select(p => int.Parse(p));
+                    return rval;
+                }
             }
             set
             {

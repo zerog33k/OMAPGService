@@ -32,13 +32,13 @@ namespace OMAPGServiceData.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
             modelBuilder.Entity<Device>().HasKey(d => d.Id);
-            modelBuilder.Entity<Device>().Property<DateTime>("UpdatedTimestamp").HasDefaultValue();
+            modelBuilder.Entity<Device>().Property(d => d.CreatedAt).HasDefaultValueSql("NOW()");
             modelBuilder.Entity<Pokemon>().HasKey(p => p.idValue);
-            modelBuilder.Entity<Pokemon>().Property<DateTime>("UpdatedTimestamp");
+            modelBuilder.Entity<Pokemon>().Property(d => d.CreatedAt).HasDefaultValueSql("NOW()");
             modelBuilder.Entity<Raid>().HasKey(r => r.id);
-            modelBuilder.Entity<Raid>().Property<DateTime>("UpdatedTimestamp");
+            modelBuilder.Entity<Raid>().Property(d => d.CreatedAt).HasDefaultValueSql("NOW()");
             modelBuilder.Entity<Gym>().HasKey(g => g.id);
-            modelBuilder.Entity<Gym>().Property<DateTime>("UpdatedTimestamp");
+            modelBuilder.Entity<Gym>().Property(d => d.CreatedAt).HasDefaultValueSql("NOW()");
             modelBuilder.Entity<Notification>().HasKey(n => n.NotifyId);
 
 			base.OnModelCreating(modelBuilder);
