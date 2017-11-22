@@ -20,8 +20,7 @@ namespace OMAPGMonitor
             var context = new OMAPGContext();
             context.ConnectString = config.DataAccessPostgresqlProvider;
             var lastPoke = context.Pokemon.OrderBy(p => p.idValue, OrderByDirection.Descending).FirstOrDefault()?.idValue ?? 0;
-            ServiceLayer.SharedInstance.LastId = lastPoke;
-            await ServiceLayer.SharedInstance.LoadData();
+            await ServiceLayer.SharedInstance.LoadData(lastPoke);
             Console.WriteLine($"Loaded {ServiceLayer.SharedInstance.Pokemon.Count} Pokemon, {ServiceLayer.SharedInstance.Gyms.Count} Gyms, and {ServiceLayer.SharedInstance.Raids.Count} Raids!");
 
             foreach(var p in ServiceLayer.SharedInstance.Pokemon)
