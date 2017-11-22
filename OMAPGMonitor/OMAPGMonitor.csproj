@@ -16,6 +16,6 @@
     <PackageReference Include="morelinq" Version="2.8.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.0.0" />
   </ItemGroup>
+  <Import Project="..\OMAPGMap\OMAPGMap.projitems" Label="Shared" Condition="Exists('..\OMAPGMap\OMAPGMap.projitems')" />
   <Import Project="..\OMAPGServiceData\OMAPGServiceData.projitems" Label="Shared" Condition="Exists('..\OMAPGServiceData\OMAPGServiceData.projitems')" />
-  <Import Project="..\..\OMAPGMap\OMAPGMap\OMAPGMap.projitems" Label="Shared" Condition="Exists('..\..\OMAPGMap\OMAPGMap\OMAPGMap.projitems')" />
 </Project>

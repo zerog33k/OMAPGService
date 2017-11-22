@@ -33,6 +33,6 @@
     <Compile Remove="Migrations\20171017015348_addServiceData.cs" />
     <Compile Remove="Migrations\OMAPGContextModelSnapshot.cs" />
   </ItemGroup>
-  <Import Project="..\..\OMAPGMap\OMAPGMap\OMAPGMap.projitems" Label="Shared" Condition="Exists('..\..\OMAPGMap\OMAPGMap\OMAPGMap.projitems')" />
+  <Import Project="..\OMAPGMap\OMAPGMap.projitems" Label="Shared" Condition="Exists('..\OMAPGMap\OMAPGMap.projitems')" />
   <Import Project="..\OMAPGServiceData\OMAPGServiceData.projitems" Label="Shared" Condition="Exists('..\OMAPGServiceData\OMAPGServiceData.projitems')" />
 </Project>
