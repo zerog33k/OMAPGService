@@ -19,31 +19,35 @@ namespace OMAPGMonitor
             ServiceLayer.SharedInstance.Password = config.Password;
             var context = new OMAPGContext();
             context.ConnectString = config.DataAccessPostgresqlProvider;
-            var lastPoke = context.Pokemon.OrderBy(p => p.idValue, OrderByDirection.Descending).FirstOrDefault()?.idValue ?? 0;
-            await ServiceLayer.SharedInstance.LoadData(lastPoke);
-            Console.WriteLine($"Loaded {ServiceLayer.SharedInstance.Pokemon.Count} Pokemon, {ServiceLayer.SharedInstance.Gyms.Count} Gyms, and {ServiceLayer.SharedInstance.Raids.Count} Raids!");
-
-            foreach(var p in ServiceLayer.SharedInstance.Pokemon)
+            while (true)
             {
-                var pokeInDB = context.Pokemon.Find(new object[] { p.idValue });
-                if (pokeInDB == null)
+                var lastPoke = context.Pokemon.OrderBy(p => p.idValue, OrderByDirection.Descending).FirstOrDefault()?.idValue ?? 0;
+                await ServiceLayer.SharedInstance.LoadData(lastPoke);
+                Console.WriteLine($"Loaded {ServiceLayer.SharedInstance.Pokemon.Count} Pokemon, {ServiceLayer.SharedInstance.Gyms.Count} Gyms, and {ServiceLayer.SharedInstance.Raids.Count} Raids!");
+
+                foreach (var p in ServiceLayer.SharedInstance.Pokemon)
                 {
-                    context.Pokemon.Add(p);
-                } else {
-                    //update it maybe?
+                    var pokeInDB = context.Pokemon.Find(new object[] { p.idValue });
+                    if (pokeInDB == null)
+                    {
+                        context.Pokemon.Add(p);
+                    }
+                    else
+                    {
+                        //update it maybe?
+                    }
                 }
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    Console.Write(e.Message);
+                }
+                Console.WriteLine("Added pokemon to database!");
+                await Task.Delay(20000);
             }
-            try
-            {
-                context.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                Console.Write(e.Message);
-            }
-            Console.WriteLine("Added pokemon to database!");
-
-            return;
         }
     }
 }
