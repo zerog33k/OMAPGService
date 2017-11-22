@@ -45,6 +45,7 @@ namespace OMAPGMonitor
                 {
                     Console.Write(e.Message);
                 }
+                ServiceLayer.SharedInstance.Pokemon.RemoveRange(0, ServiceLayer.SharedInstance.Pokemon.Count());
                 Console.WriteLine("Added pokemon to database!");
                 await Task.Delay(20000);
             }
