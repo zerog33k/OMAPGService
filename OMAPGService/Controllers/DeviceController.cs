@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OMAPGServiceData.Models;
 
 namespace OMAPGService.Controllers
@@ -53,6 +54,8 @@ namespace OMAPGService.Controllers
                 dev.NotifyPokemonStr = value.NotifyPokemonStr;
                 dev.NotifyEnabled = value.NotifyEnabled;
                 dev.DistanceAlert = value.DistanceAlert;
+                _context.Entry(dev).State = EntityState.Modified;
+                _context.SaveChanges();
                 return CreatedAtRoute("GetDevice", new { id = dev.Id }, dev);
             } else
             {
