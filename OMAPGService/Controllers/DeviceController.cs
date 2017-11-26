@@ -56,13 +56,14 @@ namespace OMAPGService.Controllers
                 dev.DistanceAlert = value.DistanceAlert;
                 _context.Entry(dev).State = EntityState.Modified;
                 _context.SaveChanges();
+                Console.WriteLine($"Device {dev.Id} updated");
                 return CreatedAtRoute("GetDevice", new { id = dev.Id }, dev);
             } else
             {
                 value.CreatedAt = DateTime.UtcNow;
                 _context.Devices.Add(value);
                 _context.SaveChanges();
-
+                Console.WriteLine($"Device {value.Id} created");
                 return CreatedAtRoute("GetDevice", new { id = value.Id }, value);
             }
 
