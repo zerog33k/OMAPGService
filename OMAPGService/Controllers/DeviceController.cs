@@ -48,6 +48,11 @@ namespace OMAPGService.Controllers
             if(_context.Devices.Where(d => d.DeviceId == value.DeviceId).Any())
             {
                 var dev = _context.Devices.Where(d => d.DeviceId == value.DeviceId).First();
+                dev.LocationLat = value.LocationLat;
+                dev.LocationLon = value.LocationLon;
+                dev.NotifyPokemonStr = value.NotifyPokemonStr;
+                dev.NotifyEnabled = value.NotifyEnabled;
+                dev.DistanceAlert = value.DistanceAlert;
                 return CreatedAtRoute("GetDevice", new { id = dev.Id }, dev);
             } else
             {
