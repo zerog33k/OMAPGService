@@ -58,6 +58,7 @@ namespace OMAPGMonitor
                 try
                 {
                     context.SaveChanges();
+                    Console.WriteLine("Added pokemon to database!");
                 }
                 catch (Exception e)
                 {
@@ -67,30 +68,35 @@ namespace OMAPGMonitor
                 {
                     foreach (var dev in context.Devices)
                     {
-                        var toNotify = ServiceLayer.SharedInstance.Pokemon.Where(p => dev.NotifyPokemon.Contains(p.pokemon_id));
-                        foreach (var p in toNotify)
+                        var sent = 0;
+                        foreach (var np in dev.NotifyPokemon)
                         {
-                            var pLoc = new GeoCoordinate(p.lat, p.lon);
-                            var dLoc = new GeoCoordinate(dev.LocationLat, dev.LocationLon);
-                            var dist = pLoc.GetDistanceTo(dLoc) * 0.00062137;
-                            var content = notifyContent.Replace("notify_title", $"{p.name} Found!");
-                            content = content.Replace("notify_body", $"{p.name} Found {dist.ToString("F1")} miles away!");
-                            var strContent = new StringContent(content, Encoding.UTF8, "application/json");
-                            strContent.Headers.Add("X-API-Token", config.AppCenterToken);
-                            try
+                            var toNotify = ServiceLayer.SharedInstance.Pokemon.Where(p => p.pokemon_id == np);
+                            sent += toNotify.Count();
+                            foreach (var p in toNotify)
                             {
-                                var response = client.PostAsync("https://appcenter.ms/api/v0.1/apps/zerogeek/Omaha-PG-Map/push/notifications", strContent);
-                            }
-                            catch (Exception e)
-                            {
-                                Console.WriteLine($"Error sending push notification for device {dev.Id}");
+                                var pLoc = new GeoCoordinate(p.lat, p.lon);
+                                var dLoc = new GeoCoordinate(dev.LocationLat, dev.LocationLon);
+                                var dist = pLoc.GetDistanceTo(dLoc) * 0.00062137;
+                                var content = notifyContent.Replace("notify_title", $"{p.name} Found!");
+                                content = content.Replace("notify_body", $"{p.name} Found {dist.ToString("F1")} miles away!");
+                                var strContent = new StringContent(content, Encoding.UTF8, "application/json");
+                                strContent.Headers.Add("X-API-Token", config.AppCenterToken);
+                                try
+                                {
+                                    var response = client.PostAsync("https://appcenter.ms/api/v0.1/apps/zerogeek/Omaha-PG-Map/push/notifications", strContent);
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine($"Error sending push notification for device {dev.Id}");
+                                }
                             }
                         }
-                        Console.WriteLine($"Sent {toNotify.Count()} notifications for device {dev.Id}");
+                        Console.WriteLine($"Sent {sent} notifications for device {dev.Id}");
                     }
                 }
                 ServiceLayer.SharedInstance.Pokemon.RemoveRange(0, ServiceLayer.SharedInstance.Pokemon.Count());
-                Console.WriteLine("Added pokemon to database!");
+
                 await Task.Delay(20000);
             }
         }
