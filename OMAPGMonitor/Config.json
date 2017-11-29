@@ -1,5 +1,6 @@
 ﻿{
   "username":  "zerogeek",
   "password":  "myster!UM",
-  "DataAccessPostgresqlProvider": "server=localhost;userid=omapgmap;password=kNcTcdXDqfEnGJgApidX8fpY;database=omapgmap;"
+  "DataAccessPostgresqlProvider": "server=localhost;userid=omapgmap;password=kNcTcdXDqfEnGJgApidX8fpY;database=omapgmap;",
+  "AppCenterToken": "XXXXXX"
 }

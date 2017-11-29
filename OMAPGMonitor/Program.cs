@@ -7,6 +7,9 @@ using MoreLinq;
 using Newtonsoft.Json;
 using OMAPGMap;
 using OMAPGServiceData.Models;
+using GeoCoordinatePortable;
+using System.Net.Http;
+using System.Text;
 
 namespace OMAPGMonitor
 {
@@ -19,6 +22,21 @@ namespace OMAPGMonitor
             ServiceLayer.SharedInstance.Password = config.Password;
             var context = new OMAPGContext();
             context.ConnectString = config.DataAccessPostgresqlProvider;
+
+            string notifyContent = @"
+{
+ ""notification_content"" : {
+
+    ""name"" : ""Pokemon Found"",
+    ""title"" : ""notify_title"",
+    ""body"" : ""notify_body""
+  },
+    ""notification_target"" : {
+    ""type"" : ""devices_target"",
+    ""devices"" : [""device_id""]
+    }
+}";
+
             while (true)
             {
                 var lastPoke = context.Pokemon.OrderBy(p => p.idValue, OrderByDirection.Descending).FirstOrDefault()?.idValue ?? 0;
@@ -44,6 +62,32 @@ namespace OMAPGMonitor
                 catch (Exception e)
                 {
                     Console.Write(e.Message);
+                }
+                using (var client = new HttpClient())
+                {
+                    foreach (var dev in context.Devices)
+                    {
+                        var toNotify = ServiceLayer.SharedInstance.Pokemon.Where(p => dev.NotifyPokemon.Contains(p.pokemon_id));
+                        foreach (var p in toNotify)
+                        {
+                            var pLoc = new GeoCoordinate(p.lat, p.lon);
+                            var dLoc = new GeoCoordinate(dev.LocationLat, dev.LocationLon);
+                            var dist = pLoc.GetDistanceTo(dLoc) * 0.00062137;
+                            var content = notifyContent.Replace("notify_title", $"{p.name} Found!");
+                            content = content.Replace("notify_body", $"{p.name} Found {dist.ToString("F1")} miles away!");
+                            var strContent = new StringContent(content, Encoding.UTF8, "application/json");
+                            strContent.Headers.Add("X-API-Token", config.AppCenterToken);
+                            try
+                            {
+                                var response = client.PostAsync("https://appcenter.ms/api/v0.1/apps/zerogeek/Omaha-PG-Map/push/notifications", strContent);
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine($"Error sending push notification for device {dev.Id}");
+                            }
+                        }
+                        Console.WriteLine($"Sent {toNotify.Count()} notifications for device {dev.Id}");
+                    }
                 }
                 ServiceLayer.SharedInstance.Pokemon.RemoveRange(0, ServiceLayer.SharedInstance.Pokemon.Count());
                 Console.WriteLine("Added pokemon to database!");

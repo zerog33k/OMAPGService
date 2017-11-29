@@ -140,18 +140,25 @@ namespace OMAPGMap
             CleanUpExpiredRaids();
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authHeaderValue);
-            var response = await client.GetAsync(raidsURL);
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var content = await response.Content.ReadAsStringAsync();
-                var raids = JsonConvert.DeserializeObject<List<Raid>>(content);
-                foreach (var r in raids)
+                var response = await client.GetAsync(raidsURL);
+                if (response.IsSuccessStatusCode)
                 {
-                    if (!Raids.Exists(r2 => r2.id.Equals(r.id)))
+                    var content = await response.Content.ReadAsStringAsync();
+                    var raids = JsonConvert.DeserializeObject<List<Raid>>(content);
+                    foreach (var r in raids)
                     {
-                        Raids.Add(r);
+                        if (!Raids.Exists(r2 => r2.id.Equals(r.id)))
+                        {
+                            Raids.Add(r);
+                        }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
 

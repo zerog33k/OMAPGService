@@ -15,6 +15,32 @@
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="morelinq" Version="2.8.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.0.0" />
+    <PackageReference Include="GeoCoordinate.NetCore" Version="1.0.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="ra9tt532.f0u~" />
+    <None Remove="rtin18of.tit~" />
+    <None Remove="siddm6lf.m84~" />
+    <None Remove="t5s6btud.8na~" />
+    <None Remove="tkvwuzsy.u2g~" />
+    <None Remove="tyitzyia.3wf~" />
+    <None Remove="u3bdz1xi.3yo~" />
+    <None Remove="uayoqk4f.i8n~" />
+    <None Remove="us60l6an.etx~" />
+    <None Remove="vaupczhv.c7f~" />
+    <None Remove="vh69ttkv.0s6~" />
+    <None Remove="vig2sebm.hka~" />
+    <None Remove="vswcses4.d7c~" />
+    <None Remove="w3ygcf7f.2ys~" />
+    <None Remove="weanzi6l.5n4~" />
+    <None Remove="x8bao4h9.9k1~" />
+    <None Remove="xgpnth7n.f2w~" />
+    <None Remove="y402tog1.2en~" />
+    <None Remove="yppbsbas.dha~" />
+    <None Remove="yt7uo5rn.9f9~" />
+    <None Remove="ytcchx4q.l5r~" />
+    <None Remove="yvu8qcel.uw4~" />
+    <None Remove="zsqvgizk.64q~" />
   </ItemGroup>
   <Import Project="..\OMAPGMap\OMAPGMap.projitems" Label="Shared" Condition="Exists('..\OMAPGMap\OMAPGMap.projitems')" />
   <Import Project="..\OMAPGServiceData\OMAPGServiceData.projitems" Label="Shared" Condition="Exists('..\OMAPGServiceData\OMAPGServiceData.projitems')" />
