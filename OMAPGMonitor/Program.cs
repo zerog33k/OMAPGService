@@ -72,28 +72,34 @@ namespace OMAPGMonitor
                         foreach (var np in dev.NotifyPokemon)
                         {
                             var toNotify = ServiceLayer.SharedInstance.Pokemon.Where(p => p.pokemon_id == np);
-                            sent += toNotify.Count();
                             foreach (var p in toNotify)
                             {
                                 var pLoc = new GeoCoordinate(p.lat, p.lon);
                                 var dLoc = new GeoCoordinate(dev.LocationLat, dev.LocationLon);
                                 var dist = pLoc.GetDistanceTo(dLoc) * 0.00062137;
-                                var content = notifyContent.Replace("notify_title", $"{p.name} Found!");
-                                content = content.Replace("notify_body", $"{p.name} Found {dist.ToString("F1")} miles away!");
-                                content = content.Replace("device_id", dev.DeviceId);
-                                var strContent = new StringContent(content, Encoding.UTF8, "application/json");
-                                strContent.Headers.Add("X-API-Token", config.AppCenterToken);
-                                try
+                                if (dist < dev.DistanceAlert || dev.DistanceAlert == 0)
                                 {
-                                    var response = await client.PostAsync("https://appcenter.ms/api/v0.1/apps/zerogeek/Omaha-PG-Map/push/notifications", strContent);
-                                    if(!response.IsSuccessStatusCode)
+                                    var content = notifyContent.Replace("notify_title", $"{p.name} Found!");
+                                    content = content.Replace("notify_body", $"{p.name} Found {dist.ToString("F1")} miles away!");
+                                    content = content.Replace("device_id", dev.DeviceId);
+                                    var strContent = new StringContent(content, Encoding.UTF8, "application/json");
+                                    strContent.Headers.Add("X-API-Token", config.AppCenterToken);
+                                    try
                                     {
-                                        Console.WriteLine($"Push notification failed with code {response.StatusCode}");
+                                        var response = await client.PostAsync("https://appcenter.ms/api/v0.1/apps/zerogeek/Omaha-PG-Map/push/notifications", strContent);
+                                        if (!response.IsSuccessStatusCode)
+                                        {
+                                            Console.WriteLine($"Push notification failed with code {response.StatusCode}");
+                                        }
+                                        else
+                                        {
+                                            sent++;
+                                        }
                                     }
-                                }
-                                catch (Exception e)
-                                {
-                                    Console.WriteLine($"Error sending push notification for device {dev.Id}");
+                                    catch (Exception e)
+                                    {
+                                        Console.WriteLine($"Error sending push notification for device {dev.Id}");
+                                    }
                                 }
                             }
                         }
