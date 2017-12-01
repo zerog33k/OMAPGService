@@ -84,7 +84,11 @@ namespace OMAPGMonitor
                                 strContent.Headers.Add("X-API-Token", config.AppCenterToken);
                                 try
                                 {
-                                    var response = client.PostAsync("https://appcenter.ms/api/v0.1/apps/zerogeek/Omaha-PG-Map/push/notifications", strContent);
+                                    var response = await client.PostAsync("https://appcenter.ms/api/v0.1/apps/zerogeek/Omaha-PG-Map/push/notifications", strContent);
+                                    if(!response.IsSuccessStatusCode)
+                                    {
+                                        Console.WriteLine($"Push notification failed with code {response.StatusCode}");
+                                    }
                                 }
                                 catch (Exception e)
                                 {
