@@ -77,7 +77,7 @@ namespace OMAPGMonitor
                                 var pLoc = new GeoCoordinate(p.lat, p.lon);
                                 var dLoc = new GeoCoordinate(dev.LocationLat, dev.LocationLon);
                                 var dist = pLoc.GetDistanceTo(dLoc) * 0.00062137;
-                                if (dist < dev.DistanceAlert || dev.DistanceAlert == 0)
+                                if (dist < 5)
                                 {
                                     var content = notifyContent.Replace("notify_title", $"{p.name} Found!");
                                     content = content.Replace("notify_body", $"{p.name} Found {dist.ToString("F1")} miles away!");
