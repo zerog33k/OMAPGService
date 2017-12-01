@@ -39,7 +39,7 @@ namespace OMAPGMonitor
 
             while (true)
             {
-                var lastPoke = context.Pokemon.OrderBy(p => p.idValue, OrderByDirection.Descending).FirstOrDefault()?.idValue ?? 0;
+                var lastPoke = context.Pokemon.MaxBy(p => p.idValue)?.idValue ?? 0;
                 await ServiceLayer.SharedInstance.LoadData(lastPoke);
                 Console.WriteLine($"Loaded {ServiceLayer.SharedInstance.Pokemon.Count} Pokemon, {ServiceLayer.SharedInstance.Gyms.Count} Gyms, and {ServiceLayer.SharedInstance.Raids.Count} Raids!");
 
@@ -81,7 +81,6 @@ namespace OMAPGMonitor
                                 var content = notifyContent.Replace("notify_title", $"{p.name} Found!");
                                 content = content.Replace("notify_body", $"{p.name} Found {dist.ToString("F1")} miles away!");
                                 content = content.Replace("device_id", dev.DeviceId);
-                                Console.WriteLine(content);
                                 var strContent = new StringContent(content, Encoding.UTF8, "application/json");
                                 strContent.Headers.Add("X-API-Token", config.AppCenterToken);
                                 try
