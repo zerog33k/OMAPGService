@@ -81,6 +81,7 @@ namespace OMAPGMonitor
                                 var content = notifyContent.Replace("notify_title", $"{p.name} Found!");
                                 content = content.Replace("notify_body", $"{p.name} Found {dist.ToString("F1")} miles away!");
                                 content = content.Replace("device_id", dev.DeviceId);
+                                Console.WriteLine(content);
                                 var strContent = new StringContent(content, Encoding.UTF8, "application/json");
                                 strContent.Headers.Add("X-API-Token", config.AppCenterToken);
                                 try
