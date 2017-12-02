@@ -15,15 +15,7 @@ namespace OMAPGMonitor
 {
     class Program
     {
-        static async Task Main(string[] args)
-        {
-            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("Config.json"));
-            ServiceLayer.SharedInstance.Username = config.Username;
-            ServiceLayer.SharedInstance.Password = config.Password;
-            var context = new OMAPGContext();
-            context.ConnectString = config.DataAccessPostgresqlProvider;
-
-            string notifyContent = @"
+        static string notifyContent = @"
 {
  ""notification_content"" : {
 
@@ -37,11 +29,25 @@ namespace OMAPGMonitor
     }
 }";
 
+        static async Task Main(string[] args)
+        {
+            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("Config.json"));
+            ServiceLayer.SharedInstance.Username = config.Username;
+            ServiceLayer.SharedInstance.Password = config.Password;
+            var lastPoke = 0;
+            var context = new OMAPGContext();
+            context.ConnectString = config.DataAccessPostgresqlProvider;
+
             while (true)
             {
-                var lastPoke = context.Pokemon.MaxBy(p => p.idValue)?.idValue ?? 0;
+                if (lastPoke == 0)
+                {
+                    lastPoke = context.Pokemon.Max(p => p.idValue);
+                }
+                Console.WriteLine("Loading data...");
                 await ServiceLayer.SharedInstance.LoadData(lastPoke);
                 Console.WriteLine($"Loaded {ServiceLayer.SharedInstance.Pokemon.Count} Pokemon, {ServiceLayer.SharedInstance.Gyms.Count} Gyms, and {ServiceLayer.SharedInstance.Raids.Count} Raids!");
+                lastPoke = ServiceLayer.SharedInstance.Pokemon.MaxBy(p => p.idValue)?.idValue ?? 0;
 
                 foreach (var p in ServiceLayer.SharedInstance.Pokemon)
                 {
@@ -66,7 +72,7 @@ namespace OMAPGMonitor
                 }
                 using (var client = new HttpClient())
                 {
-                    foreach (var dev in context.Devices)
+                    foreach (var dev in context.Devices.ToList())
                     {
                         var sent = 0;
                         foreach (var np in dev.NotifyPokemon)
