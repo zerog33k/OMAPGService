@@ -21,7 +21,8 @@ namespace OMAPGMonitor
 
     ""name"" : ""Pokemon Found"",
     ""title"" : ""notify_title"",
-    ""body"" : ""notify_body""
+    ""body"" : ""notify_body"",
+    ""custom_data"" : {""pokemon_id"": ""poke_id"", ""expires"": ""expires_time""}
   },
     ""notification_target"" : {
     ""type"" : ""devices_target"",
@@ -83,7 +84,7 @@ namespace OMAPGMonitor
                                 var pLoc = new GeoCoordinate(p.lat, p.lon);
                                 var dLoc = new GeoCoordinate(dev.LocationLat, dev.LocationLon);
                                 var dist = pLoc.GetDistanceTo(dLoc) * 0.00062137;
-                                if (dist < 5)
+                                if (dist < 3 || p.pokemon_id == 201)
                                 {
                                     var content = notifyContent.Replace("notify_title", $"{p.name} Found!");
                                     content = content.Replace("notify_body", $"{p.name} Found {dist.ToString("F1")} miles away!");
