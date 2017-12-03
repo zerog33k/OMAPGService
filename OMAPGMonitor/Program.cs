@@ -22,7 +22,7 @@ namespace OMAPGMonitor
     ""name"" : ""Pokemon Found"",
     ""title"" : ""notify_title"",
     ""body"" : ""notify_body"",
-    ""custom_data"" : {""pokemon_id"": ""poke_id"", ""expires"": ""expires_time""}
+    ""custom_data"" : {""pokemon_id"": ""poke_id"", ""expires"": ""expires_time"", ""lat"": ""poke_lat"", ""lon"": ""poke_lon""}
   },
     ""notification_target"" : {
     ""type"" : ""devices_target"",
@@ -48,7 +48,7 @@ namespace OMAPGMonitor
                 Console.WriteLine("Loading data...");
                 await ServiceLayer.SharedInstance.LoadData(lastPoke);
                 Console.WriteLine($"Loaded {ServiceLayer.SharedInstance.Pokemon.Count} Pokemon, {ServiceLayer.SharedInstance.Gyms.Count} Gyms, and {ServiceLayer.SharedInstance.Raids.Count} Raids!");
-                lastPoke = ServiceLayer.SharedInstance.Pokemon.MaxBy(p => p.idValue)?.idValue ?? 0;
+                lastPoke = ServiceLayer.SharedInstance.Pokemon?.MaxBy(p => p.idValue)?.idValue ?? 0;
 
                 foreach (var p in ServiceLayer.SharedInstance.Pokemon)
                 {
@@ -84,11 +84,16 @@ namespace OMAPGMonitor
                                 var pLoc = new GeoCoordinate(p.lat, p.lon);
                                 var dLoc = new GeoCoordinate(dev.LocationLat, dev.LocationLon);
                                 var dist = pLoc.GetDistanceTo(dLoc) * 0.00062137;
-                                if (dist < 3 || p.pokemon_id == 201)
+                                if ((dist < dev.DistanceAlert || p.pokemon_id == 201) && p.ExpiresDate > DateTime.UtcNow)
                                 {
                                     var content = notifyContent.Replace("notify_title", $"{p.name} Found!");
                                     content = content.Replace("notify_body", $"{p.name} Found {dist.ToString("F1")} miles away!");
                                     content = content.Replace("device_id", dev.DeviceId);
+                                    content = content.Replace("poke_id", p.id);
+                                    content = content.Replace("expires_time", p.expires_at.ToString());
+                                    content = content.Replace("poke_lat", p.lat.ToString("F"));
+                                    content = content.Replace("poke_lon", p.lon.ToString("F"));
+
                                     var strContent = new StringContent(content, Encoding.UTF8, "application/json");
                                     strContent.Headers.Add("X-API-Token", config.AppCenterToken);
                                     try
