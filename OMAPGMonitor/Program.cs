@@ -73,8 +73,10 @@ namespace OMAPGMonitor
                 }
                 using (var client = new HttpClient())
                 {
+                    
                     foreach (var dev in context.Devices.ToList())
                     {
+                        context.Entry<Device>(dev).Reload();
                         var sent = 0;
                         foreach (var np in dev.NotifyPokemon)
                         {
