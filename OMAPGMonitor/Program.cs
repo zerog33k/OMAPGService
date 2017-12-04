@@ -72,65 +72,64 @@ namespace OMAPGMonitor
                 {
                     context.Entry<Device>(dev).Reload();
                     var sent = 0;
+                    var toNotify = new List<Pokemon>();
+                    if (dev.Notify90)
+                    {
+                        var plus90 = ServiceLayer.SharedInstance.Pokemon.Where(p => p.iv > 0.9);
+                        toNotify.AddRange(plus90);
+                    }
+                    else if (dev.Notify100)
+                    {
+                        var hundred = ServiceLayer.SharedInstance.Pokemon.Where(p => p.iv > 0.99);
+                        toNotify.AddRange(hundred);
+                    }
                     foreach (var np in dev.NotifyPokemon)
                     {
-                        var toNotify = new List<Pokemon>();
                         toNotify.AddRange(ServiceLayer.SharedInstance.Pokemon.Where(p => p.pokemon_id == np));
-                        if(dev.Notify90)
+                    }
+                    foreach (var p in toNotify.Distinct())
+                    {
+                        var pLoc = new GeoCoordinate(p.lat, p.lon);
+                        var dLoc = new GeoCoordinate(dev.LocationLat, dev.LocationLon);
+                        var dist = pLoc.GetDistanceTo(dLoc) * 0.00062137;
+                        if (dist < dev.DistanceAlert || p.pokemon_id == 201)
                         {
-                            var plus90 = ServiceLayer.SharedInstance.Pokemon.Where(p => p.iv > 0.9);
-                            toNotify.RemoveAll(p => plus90.Contains(p));
-                            toNotify.AddRange(plus90);
-                        } else if(dev.Notify100)
-                        {
-                            var hundred = ServiceLayer.SharedInstance.Pokemon.Where(p => p.iv > 0.99);
-                            toNotify.RemoveAll(p => hundred.Contains(p));
-                            toNotify.AddRange(hundred);
-                        }
-
-                        foreach (var p in toNotify)
-                        {
-                            var pLoc = new GeoCoordinate(p.lat, p.lon);
-                            var dLoc = new GeoCoordinate(dev.LocationLat, dev.LocationLon);
-                            var dist = pLoc.GetDistanceTo(dLoc) * 0.00062137;
-                            if (dist < dev.DistanceAlert || p.pokemon_id == 201)
+                            var content = "";
+                            if (p.iv > 0.9)
                             {
-                                var content = "";
-                                if(p.iv > 0.9)
-                                {
-                                    var iv = p.iv * 100;
-                                    content = notifyContent.Replace("notify_title", $"{iv.ToString("F1")}% {p.name} Found!");
-                                    content = content.Replace("notify_body", $"{iv.ToString("F1")}% {p.name} Found {dist.ToString("F1")} miles away!");
-                                } else
-                                {
-                                    content = notifyContent.Replace("notify_title", $"{p.name} Found!");
-                                    content = content.Replace("notify_body", $"{p.name} Found {dist.ToString("F1")} miles away!");
-                                }
+                                var iv = p.iv * 100;
+                                content = notifyContent.Replace("notify_title", $"{iv.ToString("F1")}% {p.name} Found!");
+                                content = content.Replace("notify_body", $"{iv.ToString("F1")}% {p.name} Found {dist.ToString("F1")} miles away!");
+                            }
+                            else
+                            {
+                                content = notifyContent.Replace("notify_title", $"{p.name} Found!");
+                                content = content.Replace("notify_body", $"{p.name} Found {dist.ToString("F1")} miles away!");
+                            }
 
-                                content = content.Replace("device_id", dev.DeviceId);
-                                content = content.Replace("poke_id", p.id);
-                                content = content.Replace("expires_time", p.expires_at.ToString());
-                                content = content.Replace("poke_lat", p.lat.ToString("F"));
-                                content = content.Replace("poke_lon", p.lon.ToString("F"));
+                            content = content.Replace("device_id", dev.DeviceId);
+                            content = content.Replace("poke_id", p.id);
+                            content = content.Replace("expires_time", p.expires_at.ToString());
+                            content = content.Replace("poke_lat", p.lat.ToString("F"));
+                            content = content.Replace("poke_lon", p.lon.ToString("F"));
 
-                                var strContent = new StringContent(content, Encoding.UTF8, "application/json");
-                                strContent.Headers.Add("X-API-Token", config.AppCenterToken);
-                                try
+                            var strContent = new StringContent(content, Encoding.UTF8, "application/json");
+                            strContent.Headers.Add("X-API-Token", config.AppCenterToken);
+                            try
+                            {
+                                var response = await client.PostAsync("https://appcenter.ms/api/v0.1/apps/zerogeek/Omaha-PG-Map/push/notifications", strContent);
+                                if (!response.IsSuccessStatusCode)
                                 {
-                                    var response = await client.PostAsync("https://appcenter.ms/api/v0.1/apps/zerogeek/Omaha-PG-Map/push/notifications", strContent);
-                                    if (!response.IsSuccessStatusCode)
-                                    {
-                                        Console.WriteLine($"Push notification failed with code {response.StatusCode}");
-                                    }
-                                    else
-                                    {
-                                        sent++;
-                                    }
+                                    Console.WriteLine($"Push notification failed with code {response.StatusCode}");
                                 }
-                                catch (Exception e)
+                                else
                                 {
-                                    Console.WriteLine($"Error sending push notification for device {dev.Id}");
+                                    sent++;
                                 }
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine($"Error sending push notification for device {dev.Id}");
                             }
                         }
                     }
