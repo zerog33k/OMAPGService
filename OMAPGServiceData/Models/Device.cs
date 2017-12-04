@@ -38,5 +38,7 @@ namespace OMAPGServiceData.Models
         public bool NotifyEnabled { get; set; }
         [Required, DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedAt { get; set; }
+        public bool Notify90 { get; set; }
+        public bool Notify100 { get; set; }
     }
 }

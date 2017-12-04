@@ -31,7 +31,6 @@
     <Compile Remove="Migrations\20171002030809_createMySql.cs" />
     <Compile Remove="Migrations\20171017015348_addServiceData.Designer.cs" />
     <Compile Remove="Migrations\20171017015348_addServiceData.cs" />
-    <Compile Remove="Migrations\OMAPGContextModelSnapshot.cs" />
   </ItemGroup>
   <Import Project="..\OMAPGMap\OMAPGMap.projitems" Label="Shared" Condition="Exists('..\OMAPGMap\OMAPGMap.projitems')" />
   <Import Project="..\OMAPGServiceData\OMAPGServiceData.projitems" Label="Shared" Condition="Exists('..\OMAPGServiceData\OMAPGServiceData.projitems')" />

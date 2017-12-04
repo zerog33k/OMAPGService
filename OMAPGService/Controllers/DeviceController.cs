@@ -54,6 +54,8 @@ namespace OMAPGService.Controllers
                 dev.NotifyPokemonStr = value.NotifyPokemonStr;
                 dev.NotifyEnabled = value.NotifyEnabled;
                 dev.DistanceAlert = value.DistanceAlert;
+                dev.Notify90 = value.Notify90;
+                dev.Notify100 = value.Notify100;
                 _context.Entry(dev).State = EntityState.Modified;
                 _context.SaveChanges();
                 Console.WriteLine($"Device {dev.Id} updated");

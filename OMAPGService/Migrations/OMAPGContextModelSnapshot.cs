@@ -37,6 +37,10 @@ namespace OMAPGService.Migrations
 
                     b.Property<double>("LocationLon");
 
+                    b.Property<bool>("Notify100");
+
+                    b.Property<bool>("Notify90");
+
                     b.Property<bool>("NotifyEnabled");
 
                     b.Property<string>("NotifyPokemonStr");
