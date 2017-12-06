@@ -23,7 +23,7 @@ namespace OMAPGMonitor
     ""name"" : ""Pokemon Found"",
     ""title"" : ""notify_title"",
     ""body"" : ""notify_body"",
-    ""custom_data"" : {""pokemon_id"": ""poke_id"", ""expires"": ""expires_time"", ""lat"": ""poke_lat"", ""lon"": ""poke_lon""}
+    ""custom_data"" : {""pokemon_id"": ""poke_id"", ""expires"": ""expires_time"", ""lat"": ""poke_lat"", ""lon"": ""poke_lon"", ""sound"" : ""default""}
   },
     ""notification_target"" : {
     ""type"" : ""devices_target"",
