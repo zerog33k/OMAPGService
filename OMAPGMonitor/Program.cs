@@ -94,8 +94,7 @@ namespace OMAPGMonitor
                         if ((dist < dev.DistanceAlert && p.iv < 0.99) || p.pokemon_id == 201  && dist < 20)
                         {
                             var content = "";
-                            TimeZoneInfo cstZone = TimeZoneInfo.FindSystemTimeZoneById("US/Central");
-                            DateTime cstTime = TimeZoneInfo.ConvertTimeFromUtc(p.ExpiresDate, cstZone);
+                            DateTime cstTime = p.ExpiresDate.AddHours(-6.0);
                             var dsTime = cstTime.ToString("h:mm:ss");
                             if (p.iv > 0.9)
                             {
