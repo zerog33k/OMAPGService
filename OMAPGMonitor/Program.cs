@@ -67,7 +67,6 @@ namespace OMAPGMonitor
             }
             using (var client = new HttpClient())
             {
-                
                 foreach (var dev in context.Devices.Where(d => d.NotifyEnabled).ToList())
                 {
                     context.Entry<Device>(dev).Reload();
@@ -92,16 +91,17 @@ namespace OMAPGMonitor
                         var pLoc = new GeoCoordinate(p.lat, p.lon);
                         var dLoc = new GeoCoordinate(dev.LocationLat, dev.LocationLon);
                         var dist = pLoc.GetDistanceTo(dLoc) * 0.00062137;
-                        if (dist < dev.DistanceAlert || p.pokemon_id == 201 || p.iv > 0.99)
+                        if ((dist < dev.DistanceAlert && p.iv < 0.99) || p.pokemon_id == 201  && dist < 20)
                         {
                             var content = "";
-                            var dsTime = p.ExpiresDate.ToLocalTime().ToString("hh:mm:ss");
+                            TimeZoneInfo cstZone = TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
+                            DateTime cstTime = TimeZoneInfo.ConvertTimeFromUtc(p.ExpiresDate, cstZone);
+                            var dsTime = cstTime.ToString("h:mm:ss");
                             if (p.iv > 0.9)
                             {
                                 var iv = p.iv * 100;
-                                
                                 content = notifyContent.Replace("notify_title", $"{iv.ToString("F1")}% {p.name} Found!");
-                                content = content.Replace("notify_body", $"({p.atk}/{p.def}/{p.sta}) {dist.ToString("F1")} miles away! Level {p.level}, CP {p.cp}, available till {dsTime}.");
+                                content = content.Replace("notify_body", $"{dist.ToString("F1")} miles away! ({p.atk}/{p.def}/{p.sta}) - Level {p.level}, CP {p.cp}, available till {dsTime}.");
                             }
                             else
                             {
