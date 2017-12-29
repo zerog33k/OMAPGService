@@ -95,19 +95,19 @@ namespace OMAPGMonitor
                         if (dist < dev.DistanceAlert || p.pokemon_id == 201 || p.iv > 0.99)
                         {
                             var content = "";
-                            var despawn = p.ExpiresDate - DateTime.UtcNow;
-                            var dsTime = $"{despawn.Minutes}:{despawn.Seconds.ToString("D2")}";
+                            var despawn = ;
+                            var dsTime = p.ExpiresDate.ToLocalTime().ToString("hh:mm:ss");
                             if (p.iv > 0.9)
                             {
                                 var iv = p.iv * 100;
                                 
                                 content = notifyContent.Replace("notify_title", $"{iv.ToString("F1")}% {p.name} Found!");
-                                content = content.Replace("notify_body", $"({p.atk}/{p.def}/{p.sta}) {dist.ToString("F1")} miles away! Level {p.level}, CP {p.cp}, despawns in {dsTime}.");
+                                content = content.Replace("notify_body", $"({p.atk}/{p.def}/{p.sta}) {dist.ToString("F1")} miles away! Level {p.level}, CP {p.cp}, available till {dsTime}.");
                             }
                             else
                             {
                                 content = notifyContent.Replace("notify_title", $"{p.name} Found!");
-                                content = content.Replace("notify_body", $"{p.name} Found {dist.ToString("F1")} miles away!");
+                                content = content.Replace("notify_body", $"{dist.ToString("F1")} miles away! Available till {dsTime}.");
                             }
 
                             content = content.Replace("device_id", dev.DeviceId);
