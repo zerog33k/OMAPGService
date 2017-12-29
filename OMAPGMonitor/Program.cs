@@ -95,7 +95,6 @@ namespace OMAPGMonitor
                         if (dist < dev.DistanceAlert || p.pokemon_id == 201 || p.iv > 0.99)
                         {
                             var content = "";
-                            var despawn = ;
                             var dsTime = p.ExpiresDate.ToLocalTime().ToString("hh:mm:ss");
                             if (p.iv > 0.9)
                             {
