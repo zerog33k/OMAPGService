@@ -62,12 +62,12 @@ namespace OMAPGMap
             return rval;
         }
 
-        public async Task LoadData(int lastId)
+        public async Task LoadData(long lastUpdate)
         {
             if (LayersEnabled[0])
             {
                 Console.WriteLine("loading Pokemon");
-                await LoadPokemon(lastId);
+                await LoadPokemon(lastUpdate);
             }
             if (LayersEnabled[1])
             {
@@ -82,7 +82,7 @@ namespace OMAPGMap
 
         }
 
-        public async Task LoadPokemon(int lastId)
+        public async Task LoadPokemon(long lastUpdate)
         {
             var authData = string.Format("{0}:{1}", Username, Password);
             var authHeaderValue = Convert.ToBase64String(Encoding.UTF8.GetBytes(authData));
@@ -91,13 +91,12 @@ namespace OMAPGMap
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authHeaderValue);
             try
             {
-                var response = await client.GetAsync($"{pokemonURL}?last_id={lastId}");
+                var response = await client.GetAsync($"{pokemonURL}?timestamp={lastUpdate}");
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
                     var pokes = JsonConvert.DeserializeObject<List<Pokemon>>(content);
                     Pokemon.AddRange(pokes);
-
                 }
             }
             catch (Exception e)

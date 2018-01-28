@@ -11,9 +11,10 @@ using System;
 namespace OMAPGService.Migrations
 {
     [DbContext(typeof(OMAPGContext))]
-    partial class OMAPGContextModelSnapshot : ModelSnapshot
+    [Migration("20180128042807_add_timestamp")]
+    partial class add_timestamp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

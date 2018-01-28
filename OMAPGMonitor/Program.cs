@@ -36,12 +36,13 @@ namespace OMAPGMonitor
             var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("Config.json"));
             ServiceLayer.SharedInstance.Username = config.Username;
             ServiceLayer.SharedInstance.Password = config.Password;
-            var lastPoke = 0;
+            var minTimestamp = (long)(DateTime.UtcNow.AddMinutes(-5.0).Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
             var context = new OMAPGContext();
             context.ConnectString = config.DataAccessPostgresqlProvider;
-            lastPoke = context.Pokemon.Max(p => p.idValue);
+            var maxTimestamp = context.Pokemon.Max(p => p.timestamp);
+            var lastTimestamp = minTimestamp > maxTimestamp ? minTimestamp : maxTimestamp;
             Console.WriteLine("Loading data...");
-            await ServiceLayer.SharedInstance.LoadData(lastPoke);
+            await ServiceLayer.SharedInstance.LoadData(lastTimestamp);
             Console.WriteLine($"Loaded {ServiceLayer.SharedInstance.Pokemon.Count} Pokemon, {ServiceLayer.SharedInstance.Gyms.Count} Gyms, and {ServiceLayer.SharedInstance.Raids.Count} Raids!");
 
             foreach (var p in ServiceLayer.SharedInstance.Pokemon)
@@ -59,7 +60,7 @@ namespace OMAPGMonitor
             try
             {
                 context.SaveChanges();
-                Console.WriteLine("Added pokemon to database!");
+                Console.WriteLine("Added \tpokemon to database!");
             }
             catch (Exception e)
             {
@@ -96,7 +97,14 @@ namespace OMAPGMonitor
                             var content = "";
                             DateTime cstTime = p.ExpiresDate.AddHours(-6.0);
                             var dsTime = cstTime.ToString("h:mm:ss");
-                            if (p.iv > 0.9)
+                            if(p.pokemon_id == 201)
+                            {
+                                var letter = ((Char)(65 + (p.form - 1))).ToString();
+                                var iv = p.iv * 100;
+                                content = notifyContent.Replace("notify_title", $"{iv.ToString("F1")}% {p.name} Found, letter {letter}!");
+                                content = content.Replace("notify_body", $"{dist.ToString("F1")} miles away! ({p.atk}/{p.def}/{p.sta}) - Level {p.level}, CP {p.cp}, available till {dsTime}.");
+                            }
+                            else if (p.iv > 0.9)
                             {
                                 var iv = p.iv * 100;
                                 content = notifyContent.Replace("notify_title", $"{iv.ToString("F1")}% {p.name} Found!");
