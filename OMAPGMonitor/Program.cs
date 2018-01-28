@@ -39,8 +39,12 @@ namespace OMAPGMonitor
             var minTimestamp = (long)(DateTime.UtcNow.AddMinutes(-5.0).Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
             var context = new OMAPGContext();
             context.ConnectString = config.DataAccessPostgresqlProvider;
-            var maxTimestamp = context.Pokemon.Max(p => p.timestamp);
-            var lastTimestamp = minTimestamp > maxTimestamp ? minTimestamp : maxTimestamp;
+            var lastTimestamp = minTimestamp;
+            if (context.Pokemon.Count() > 0)
+            {
+                var maxTimestamp = context.Pokemon.Max(p => p.timestamp);
+                lastTimestamp = minTimestamp > maxTimestamp ? minTimestamp : maxTimestamp;
+            }
             Console.WriteLine("Loading data...");
             await ServiceLayer.SharedInstance.LoadData(lastTimestamp);
             Console.WriteLine($"Loaded {ServiceLayer.SharedInstance.Pokemon.Count} Pokemon, {ServiceLayer.SharedInstance.Gyms.Count} Gyms, and {ServiceLayer.SharedInstance.Raids.Count} Raids!");
