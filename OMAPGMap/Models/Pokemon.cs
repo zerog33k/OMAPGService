@@ -46,7 +46,7 @@ namespace OMAPGMap.Models
         public int sta { get; set; }
         public int level { get; set; }
         public int cp { get; set; }
-        public int form { get; set; }
+        public int? form { get; set; }
         public long timestamp { get; set; }
 
         public int CompareTo(object obj)

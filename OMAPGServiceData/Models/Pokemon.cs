@@ -51,7 +51,7 @@ namespace OMAPGServiceData.Models
 
         public float iv { get => (sta + def + atk) / 45.0f; }
 
-        public int form { get; set; }
+        public int? form { get; set; }
         public long timestamp { get; set; }
 
         public int CompareTo(object obj)
