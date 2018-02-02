@@ -100,7 +100,8 @@ namespace OMAPGMonitor
                         var pLoc = new GeoCoordinate(p.lat, p.lon);
                         var dLoc = new GeoCoordinate(dev.LocationLat, dev.LocationLon);
                         var dist = pLoc.GetDistanceTo(dLoc) * 0.00062137;
-                        if (((dist < dev.DistanceAlert && p.iv < 0.99) || p.pokemon_id == 201 || p.iv > 0.99)  && dist < dev.MaxDistance )
+                        var maxDist = dev.MaxDistance == 0 ? 20 : dev.MaxDistance;
+                        if (((dist < dev.DistanceAlert && p.iv < 0.99) || p.pokemon_id == 201 || p.iv > 0.99)  && dist < maxDist )
                         {
                             var content = "";
                             DateTime cstTime = p.ExpiresDate.AddHours(-6.0);
