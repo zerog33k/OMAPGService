@@ -93,7 +93,7 @@ namespace OMAPGMonitor
                     }
                     if (dev.IgnorePokemon.Count() > 0)
                     {
-                        toNotify = toNotify.Where(p => dev.IgnorePokemon.Contains(p.pokemon_id)).ToList();
+                        toNotify = toNotify.Where(p => !dev.IgnorePokemon.Contains(p.pokemon_id)).ToList();
                     }
                     foreach (var p in toNotify.Distinct())
                     {
