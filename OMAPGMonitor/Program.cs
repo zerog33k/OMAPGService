@@ -79,24 +79,28 @@ namespace OMAPGMonitor
                     var toNotify = new List<Pokemon>();
                     if (dev.Notify90)
                     {
-                        var plus90 = ServiceLayer.SharedInstance.Pokemon.Where(p => p.iv > 0.9);
+                        var plus90 = ServiceLayer.SharedInstance.Pokemon.Where(p => p.iv > 0.9 && p.level > dev.MinLevelAlert);
                         toNotify.AddRange(plus90);
                     }
                     else if (dev.Notify100)
                     {
-                        var hundred = ServiceLayer.SharedInstance.Pokemon.Where(p => p.iv > 0.99);
+                        var hundred = ServiceLayer.SharedInstance.Pokemon.Where(p => p.iv > 0.99 && p.level > dev.MinLevelAlert);
                         toNotify.AddRange(hundred);
                     }
                     foreach (var np in dev.NotifyPokemon)
                     {
                         toNotify.AddRange(ServiceLayer.SharedInstance.Pokemon.Where(p => p.pokemon_id == np));
                     }
+                    if (dev.IgnorePokemon.Count() > 0)
+                    {
+                        toNotify = toNotify.Where(p => dev.IgnorePokemon.Contains(p.pokemon_id)).ToList();
+                    }
                     foreach (var p in toNotify.Distinct())
                     {
                         var pLoc = new GeoCoordinate(p.lat, p.lon);
                         var dLoc = new GeoCoordinate(dev.LocationLat, dev.LocationLon);
                         var dist = pLoc.GetDistanceTo(dLoc) * 0.00062137;
-                        if (((dist < dev.DistanceAlert && p.iv < 0.99) || p.pokemon_id == 201 || p.iv > 0.99)  && dist < 20 )
+                        if (((dist < dev.DistanceAlert && p.iv < 0.99) || p.pokemon_id == 201 || p.iv > 0.99)  && dist < dev.MaxDistance )
                         {
                             var content = "";
                             DateTime cstTime = p.ExpiresDate.AddHours(-6.0);
