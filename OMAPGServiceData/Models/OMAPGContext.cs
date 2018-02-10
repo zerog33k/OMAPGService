@@ -40,6 +40,7 @@ namespace OMAPGServiceData.Models
             modelBuilder.Entity<Gym>().HasKey(g => g.id);
             modelBuilder.Entity<Gym>().Property(d => d.CreatedAt).HasDefaultValueSql("NOW()");
             modelBuilder.Entity<Notification>().HasKey(n => n.NotifyId);
+            modelBuilder.Entity<Notification>().Property(n => n.CreatedAt).HasDefaultValueSql("NOW()");
 
 			base.OnModelCreating(modelBuilder);
 		}

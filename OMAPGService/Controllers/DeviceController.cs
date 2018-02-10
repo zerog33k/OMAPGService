@@ -59,6 +59,7 @@ namespace OMAPGService.Controllers
                 dev.MinLevelAlert = value.MinLevelAlert;
                 dev.IgnorePokemonStr = value.IgnorePokemonStr;
                 dev.MaxDistance = value.MaxDistance;
+                dev.UpdatedAt = DateTime.UtcNow;
                 _context.Entry(dev).State = EntityState.Modified;
                 _context.SaveChanges();
                 Console.WriteLine($"Device {dev.Id} updated");
