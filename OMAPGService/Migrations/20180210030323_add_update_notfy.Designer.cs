@@ -11,9 +11,10 @@ using System;
 namespace OMAPGService.Migrations
 {
     [DbContext(typeof(OMAPGContext))]
-    partial class OMAPGContextModelSnapshot : ModelSnapshot
+    [Migration("20180210030323_add_update_notfy")]
+    partial class add_update_notfy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

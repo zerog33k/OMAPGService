@@ -43,6 +43,7 @@ namespace OMAPGServiceData.Models
         public int MaxDistance {get; set; } = 20;
         public int MinLevelAlert {get; set;}
         public string IgnorePokemonStr {get; set;}
+        public bool NotifyWeatherChange { get; set; } = false;
         public DateTime UpdatedAt { get; set; }
         [NotMapped]
         public IEnumerable<int> IgnorePokemon

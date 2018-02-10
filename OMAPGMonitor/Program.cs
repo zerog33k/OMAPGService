@@ -155,7 +155,8 @@ namespace OMAPGMonitor
                                         Message = content,
                                         PokemonId = p.pokemon_id,
                                         Distance = dist,
-                                        Device = dev
+                                        Device = dev,
+                                        SightingId = p.id
                                     };
                                     context.Notifications.Add(notify);
                                     sent++;

@@ -13,6 +13,7 @@ namespace OMAPGServiceData.Models
         public bool seen { get; set; }
         public long NotifyId { get; set; }
         public double Distance { get; set; }
+        public string SightingId { get; set; }
 
         [Required, DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedAt { get; set; }
