@@ -91,6 +91,10 @@ namespace OMAPGMonitor
                     {
                         toNotify.AddRange(ServiceLayer.SharedInstance.Pokemon.Where(p => p.pokemon_id == np));
                     }
+                    if(dev.NotifyPokemon.Contains(201))
+                    {
+                        toNotify.AddRange(ServiceLayer.SharedInstance.Pokemon.Where(p => p.pokemon_id == 201));
+                    }
                     if (dev.IgnorePokemon.Count() > 0)
                     {
                         toNotify = toNotify.Where(p => !dev.IgnorePokemon.Contains(p.pokemon_id)).ToList();
@@ -103,6 +107,10 @@ namespace OMAPGMonitor
                         var maxDist = dev.MaxDistance == 0 ? 20 : dev.MaxDistance;
                         if (((dist < dev.DistanceAlert && p.iv < 0.99) || p.pokemon_id == 201 || p.iv > 0.99)  && dist < maxDist )
                         {
+                            if(sent > 4)
+                            {
+                                break;
+                            }
                             var content = "";
                             DateTime cstTime = p.ExpiresDate.AddHours(-6.0);
                             var dsTime = cstTime.ToString("h:mm:ss");
@@ -142,6 +150,14 @@ namespace OMAPGMonitor
                                 }
                                 else
                                 {
+                                    var notify = new Notification()
+                                    {
+                                        Message = content,
+                                        PokemonId = p.pokemon_id,
+                                        Distance = dist,
+                                        Device = dev
+                                    };
+                                    context.Notifications.Add(notify);
                                     sent++;
                                 }
                             }
@@ -152,6 +168,15 @@ namespace OMAPGMonitor
                         }
                     }
                     Console.WriteLine($"Sent {sent} notifications for device {dev.Id}");
+                }
+                try
+                {
+                    context.SaveChanges();
+                    Console.WriteLine("Added notifications to database!");
+                }
+                catch (Exception e)
+                {
+                    Console.Write(e.Message);
                 }
             }
             ServiceLayer.SharedInstance.Pokemon.RemoveRange(0, ServiceLayer.SharedInstance.Pokemon.Count());
