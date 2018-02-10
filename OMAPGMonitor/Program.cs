@@ -33,6 +33,7 @@ namespace OMAPGMonitor
 
         static async Task Main(string[] args)
         {
+            var start = DateTime.Now;
             var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("Config.json"));
             ServiceLayer.SharedInstance.Username = config.Username;
             ServiceLayer.SharedInstance.Password = config.Password;
@@ -180,7 +181,9 @@ namespace OMAPGMonitor
                     Console.Write(e.Message);
                 }
             }
-            ServiceLayer.SharedInstance.Pokemon.RemoveRange(0, ServiceLayer.SharedInstance.Pokemon.Count());
+            var end = DateTime.Now;
+            var diff = end - start;
+            Console.WriteLine($"Monitor took {diff.TotalSeconds.ToString("F1")} seconds to run");
         }
     }
 }
