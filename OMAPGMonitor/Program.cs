@@ -71,7 +71,7 @@ namespace OMAPGMonitor
             }
             using (var client = new HttpClient())
             {
-                foreach (var dev in context.Devices.Where(d => d.NotifyEnabled).ToList())
+                foreach (var dev in context.Devices.Where(d => d.NotifyEnabled).OrderBy(d => d.DeviceId).ToList())
                 {
                     context.Entry<Device>(dev).Reload();
                     var sent = 0;
@@ -177,7 +177,7 @@ namespace OMAPGMonitor
                             }
                         }
                     }
-                    Console.WriteLine($"Sent {sent} notifications for device {dev.Id}");
+                    Console.WriteLine($"Sent {sent} notifications for device {dev.Id} - OSType: {dev.OSType}");
                 }
                 try
                 {
