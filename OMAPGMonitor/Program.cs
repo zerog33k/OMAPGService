@@ -42,7 +42,7 @@ namespace OMAPGMonitor
             var minTimestamp = (long)(DateTime.UtcNow.AddMinutes(-5.0).Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
             var context = new OMAPGContext();
             context.ConnectString = config.DataAccessPostgresqlProvider;
-            var maxTimestamp = context.Pokemon.FromSql("select * from public.\"Pokemon\" where timestamp = (select max(timestamp) from public.\"Pokemon\");").FirstOrDefault()?.timestamp ?? minTimestamp;
+            var maxTimestamp = context.Pokemon.FromSql("select * from public.\"Pokemon\" where timestamp = (select max(timestamp) from public.\"Pokemon\")").FirstOrDefault()?.timestamp ?? minTimestamp;
             var lastTimestamp = minTimestamp > maxTimestamp ? minTimestamp : maxTimestamp;
             Console.WriteLine("Loading data...");
             await ServiceLayer.SharedInstance.LoadData(lastTimestamp);
@@ -71,7 +71,7 @@ namespace OMAPGMonitor
             }
             using (var client = new HttpClient())
             {
-                foreach (var dev in context.Devices.Where(d => d.NotifyEnabled).OrderBy(d => d.DeviceId).ToList())
+                foreach (var dev in context.Devices.Where(d => d.NotifyEnabled).ToList())
                 {
                     context.Entry<Device>(dev).Reload();
                     var sent = 0;
