@@ -23,14 +23,16 @@ namespace OMAPGMonitor
     ""name"" : ""Pokemon Found"",
     ""title"" : ""notify_title"",
     ""body"" : ""notify_body"",
-    ""custom_data"" : {""pokemon_id"": ""poke_id"", ""expires"": ""expires_time"", ""lat"": ""poke_lat"", ""lon"": ""poke_lon"", ""sound"" : ""default""}
-  },
+    ""custom_data"" : ,{custom_data}
+  }
     ""notification_target"" : {
     ""type"" : ""devices_target"",
     ""devices"" : [""device_id""]
     }
 }";
 
+        static string iosData = """pokemon_id"": ""poke_id"", ""expires"": ""expires_time"", ""lat"": ""poke_lat"", ""lon"": ""poke_lon"", ""sound"" : ""default""";
+        static string androidData = """pokemon_id"": ""poke_id"", ""expires"": ""expires_time"", ""lat"": ""poke_lat"", ""lon"": ""poke_lon"", ""sound"" : ""default"", ""icon"": ""androidnotify"", ""color"" : ""#1B5E20""";
         static async Task Main(string[] args)
         {
             var start = DateTime.Now;
@@ -129,7 +131,16 @@ namespace OMAPGMonitor
                                 content = notifyContent.Replace("notify_title", $"{p.name} Found!");
                                 content = content.Replace("notify_body", $"{dist.ToString("F1")} miles away! Available till {dsTime}.");
                             }
-
+                            var appName = "";
+                            if(dev.OSType == 1)
+                            {
+                                appName = "Omaha-PG-Map" ;
+                                content = content.Replace("custom_data", iosData);
+                            } else 
+                            {
+                                appName = "Omaha-PG-Map-Android";
+                                content = content.Replace("custom_data", androidData);
+                            }
                             content = content.Replace("device_id", dev.DeviceId);
                             content = content.Replace("poke_id", p.id);
                             content = content.Replace("expires_time", p.expires_at.ToString());
@@ -141,7 +152,6 @@ namespace OMAPGMonitor
                             try
                             {
 
-                                var appName = dev.OSType == 1 ? "Omaha-PG-Map" : "Omaha-PG-Map-Android";
                                 var response = await client.PostAsync($"https://appcenter.ms/api/v0.1/apps/zerogeek/{appName}/push/notifications", strContent);
                                 if (!response.IsSuccessStatusCode)
                                 {

@@ -61,6 +61,7 @@ namespace OMAPGService.Controllers
                 dev.MaxDistance = value.MaxDistance;
                 dev.UpdatedAt = DateTime.UtcNow;
                 dev.OSType = value.OSType;
+                dev.NotifyWeatherChange = dev.NotifyWeatherChange;
                 _context.Entry(dev).State = EntityState.Modified;
                 _context.SaveChanges();
                 Console.WriteLine($"Device {dev.Id} updated");

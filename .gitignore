@@ -38,3 +38,5 @@ Thumbs.db
 
 # dotCover
 *.dotCover
+.vscode/launch.json
+.vscode/tasks.json
