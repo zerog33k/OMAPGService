@@ -106,7 +106,7 @@ namespace OMAPGMonitor
                         var maxDist = dev.MaxDistance == 0 ? 20 : dev.MaxDistance;
                         if ((((dist < dev.DistanceAlert && p.iv < 0.99) || p.iv > 0.99)  && dist < maxDist) || (p.pokemon_id == 201 && dist < 20))
                         {
-                            if(sent > 4 || p.pokemon_id != 201)
+                            if(sent > 4 && p.pokemon_id != 201)
                             {
                                 break;
                             }
@@ -155,7 +155,7 @@ namespace OMAPGMonitor
                                 var response = await client.PostAsync($"https://appcenter.ms/api/v0.1/apps/zerogeek/{appName}/push/notifications", strContent);
                                 if (!response.IsSuccessStatusCode)
                                 {
-                                    Console.WriteLine($"Push notification failed with code {response.StatusCode}");
+                                    Console.WriteLine($"Push notification failed with code {response.StatusCode} \n {content}");
                                 }
                                 else
                                 {
