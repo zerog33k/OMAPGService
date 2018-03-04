@@ -23,7 +23,7 @@ namespace OMAPGMonitor
     ""name"" : ""Pokemon Found"",
     ""title"" : ""notify_title"",
     ""body"" : ""notify_body"",
-    ""custom_data"" : ,{custom_data}
+    ""custom_data"" : ,{custom_data2}
   }
     ""notification_target"" : {
     ""type"" : ""devices_target"",
@@ -135,11 +135,11 @@ namespace OMAPGMonitor
                             if(dev.OSType == 1)
                             {
                                 appName = "Omaha-PG-Map" ;
-                                content = content.Replace("custom_data", iosData);
+                                content = content.Replace("custom_data2", iosData);
                             } else 
                             {
                                 appName = "Omaha-PG-Map-Android";
-                                content = content.Replace("custom_data", androidData);
+                                content = content.Replace("custom_data2", androidData);
                             }
                             content = content.Replace("device_id", dev.DeviceId);
                             content = content.Replace("poke_id", p.id);
