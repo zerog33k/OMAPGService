@@ -24,7 +24,7 @@ namespace OMAPGMonitor
     ""title"" : ""notify_title"",
     ""body"" : ""notify_body"",
     ""custom_data"" : { custom_data2 }
-  }
+  },
     ""notification_target"" : {
     ""type"" : ""devices_target"",
     ""devices"" : [""device_id""]
