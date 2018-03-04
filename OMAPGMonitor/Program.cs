@@ -31,8 +31,8 @@ namespace OMAPGMonitor
     }
 }";
 
-        static string iosData = """pokemon_id"": ""poke_id"", ""expires"": ""expires_time"", ""lat"": ""poke_lat"", ""lon"": ""poke_lon"", ""sound"" : ""default""";
-        static string androidData = """pokemon_id"": ""poke_id"", ""expires"": ""expires_time"", ""lat"": ""poke_lat"", ""lon"": ""poke_lon"", ""sound"" : ""default"", ""icon"": ""androidnotify"", ""color"" : ""#1B5E20""";
+        static string iosData = @"""pokemon_id"": ""poke_id"", ""expires"": ""expires_time"", ""lat"": ""poke_lat"", ""lon"": ""poke_lon"", ""sound"" : ""default""";
+        static string androidData = @"""pokemon_id"": ""poke_id"", ""expires"": ""expires_time"", ""lat"": ""poke_lat"", ""lon"": ""poke_lon"", ""sound"" : ""default"", ""icon"": ""androidnotify"", ""color"" : ""#1B5E20""";
         static async Task Main(string[] args)
         {
             var start = DateTime.Now;
