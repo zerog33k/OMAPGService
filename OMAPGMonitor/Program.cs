@@ -63,7 +63,7 @@ namespace OMAPGMonitor
             try
             {
                 context.SaveChanges();
-                Console.WriteLine("Added \tpokemon to database!");
+                Console.WriteLine("Added pokemon to database!");
             }
             catch (Exception e)
             {
@@ -177,7 +177,7 @@ namespace OMAPGMonitor
                             }
                         }
                     }
-                    Console.WriteLine($"Sent {sent} notifications for device {dev.Id} - OSType: {dev.OSType}");
+                    Console.WriteLine($"Sent {sent} notifications out of {toNotify.Count()} for device {dev.Id} - OSType: {dev.OSType}");
                 }
                 try
                 {
