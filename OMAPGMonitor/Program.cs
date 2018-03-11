@@ -71,7 +71,8 @@ namespace OMAPGMonitor
             }
             using (var client = new HttpClient())
             {
-                foreach (var dev in context.Devices.Where(d => d.NotifyEnabled).ToList())
+                var updatedSince = DateTime.UtcNow.AddDays(-2.0);
+                foreach (var dev in context.Devices.Where(d => d.NotifyEnabled && d.UpdatedAt > updatedSince).ToList())
                 {
                     context.Entry<Device>(dev).Reload();
                     var sent = 0;
