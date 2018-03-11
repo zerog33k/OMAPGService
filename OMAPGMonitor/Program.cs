@@ -111,7 +111,7 @@ namespace OMAPGMonitor
                                 break;
                             }
                             var content = "";
-                            DateTime cstTime = p.ExpiresDate.AddHours(-6.0);
+                            DateTime cstTime = p.ExpiresDate.AddHours(-5.0);
                             var dsTime = cstTime.ToString("h:mm:ss");
                             if(p.pokemon_id == 201)
                             {
